@@ -181,6 +181,8 @@ spacing:
   lg: 24px
   xl: 32px
   xxl: 48px
+  # CSS variables: spacing.xs → --mat-sys-spacing-xs (4px), etc.
+  # All values are multiples of the 8px base grid (except xs=4px micro-adjustment)
 
 components:
   # Buttons — five variants in descending emphasis order
@@ -477,6 +479,30 @@ Utility classes (requires `mat.system-classes()`):
 
 Angular Material does not impose a grid system. Use your own grid; Material components adapt to
 whatever layout they are placed in.
+
+### Spacing Token Reference
+
+All spacing follows an **8px base grid**, except `xs` (4px micro-adjustment). Use CSS variables in code; reference this table when designing:
+
+| Token | Pixel Value | CSS Variable | Typical Use Cases |
+|-------|-------------|--------------|-------------------|
+| **xs** | 4px | `--mat-sys-spacing-xs` | Icon-to-label gaps, micro-spacing within components |
+| **sm** | 8px | `--mat-sys-spacing-sm` | Small component padding, adjacent element gaps |
+| **md** | 16px | `--mat-sys-spacing-md` | Section padding, moderate gaps between groups |
+| **lg** | 24px | `--mat-sys-spacing-lg` | Major section gaps, card padding |
+| **xl** | 32px | `--mat-sys-spacing-xl` | Large section gaps, hero section padding |
+| **xxl** | 48px | `--mat-sys-spacing-xxl` | Extra-large gaps, full-width sections |
+
+**Usage in CSS:**
+```scss
+.my-component {
+  padding: var(--mat-sys-spacing-lg);  // 24px
+  gap: var(--mat-sys-spacing-md);      // 16px between flex children
+  margin-bottom: var(--mat-sys-spacing-lg);  // ❌ DON'T — let parent control margins
+}
+```
+
+**Grid Philosophy:** The 8px grid creates mathematical rhythm. Never use 5px, 7px, 13px. When you need fine-tuning, use `xs` (4px) for micro-adjustments, not arbitrary values.
 
 **Spacing** follows an **8px base grid**. All layout measurements should be multiples of 8px.
 Use 4px (`spacing.xs`) only for micro-adjustments within a component (icon-to-label gap, input
