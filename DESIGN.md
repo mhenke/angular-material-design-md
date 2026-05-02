@@ -1135,9 +1135,73 @@ $theme: mat.define-theme(( density: -2 ));
 
 ### Icons
 
-- **Do** use `MatIconRegistry` to register custom SVG icons with `DomSanitizer`
-- **Do** use `mat-icon` with `fontSet` for non-Material icon libraries
+Material Design 3 uses Material Icons (1,000+ SVG icons). Sizes, weights, and usage are standardized.
+
+**Standard Icon Sizes:**
+
+| Size | Pixel Value | CSS Class/Variable | Typical Use Cases |
+|------|----------|----|---|
+| **Small** | 16px | `mat-icon-16` | Inline badges, decorative, small indicators |
+| **Default** | 24px | `mat-icon` (default) | Buttons, app bars, list items, general use |
+| **Large** | 32px | `mat-icon-32` | Emphasized icons, feature highlights |
+| **XL** | 48px | `mat-icon-48` | Hero sections, splash screens, emphasis |
+
+**Icon Weight (Style):**
+
+Material Icons come in 4 optical weights:
+- **100 (thin):** Minimal weight, very light stroke
+- **300 (light):** Lighter appearance, readable at small sizes
+- **400 (regular):** Standard weight, default for all icons
+- **700 (bold):** Heavy weight, emphasis
+
+Use **400 (regular)** by default. Use **300 (light)** only at sizes ≥ 48px.
+
+**HTML Examples:**
+
+```html
+<!-- Default 24px icon -->
+<mat-icon>menu</mat-icon>
+
+<!-- Small 16px icon (for inline use) -->
+<mat-icon style="font-size: 16px; width: 16px; height: 16px;">close</mat-icon>
+
+<!-- Large 32px icon (for emphasis) -->
+<mat-icon style="font-size: 32px; width: 32px; height: 32px;">star</mat-icon>
+
+<!-- Icon in button (Material handles sizing) -->
+<button mat-icon-button>
+  <mat-icon>shopping_cart</mat-icon>
+</button>
+
+<!-- Custom SVG icon (registered with MatIconRegistry) -->
+<mat-icon svgIcon="my-custom-icon"></mat-icon>
+```
+
+**Registration (TypeScript):**
+
+```typescript
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+
+constructor(
+  private matIconRegistry: MatIconRegistry,
+  private domSanitizer: DomSanitizer
+) {
+  // Register custom SVG icon
+  this.matIconRegistry.addSvgIcon(
+    'my-custom-icon',
+    this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/custom.svg')
+  );
+}
+```
+
+**Best Practices:**
+
+- **Do** use Material Icons from Google's icon library (https://fonts.google.com/icons)
+- **Do** register custom SVG icons via `MatIconRegistry`
 - **Don't** inline SVG directly in templates — register and reference via `mat-icon`
+- **Don't** use arbitrary icon sizes (25px, 30px, etc.) — pick from standard sizes above
+- **Don't** set icon color via CSS on the icon itself — inherit from parent component
 
 ## Agent Prompt Guide
 
