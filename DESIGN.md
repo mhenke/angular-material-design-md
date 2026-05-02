@@ -62,6 +62,16 @@ colors:
   scrim: "#000000"
   shadow: "#000000"
 
+elevation:
+  # Shadow levels — six elevation levels (0-5) with progressively stronger shadows
+  # Applied as box-shadow; CSS variable names: --mat-sys-level{N}
+  level0: "none"
+  level1: "0px 2px 6px rgba(0,0,0,0.12)"
+  level2: "0px 4px 8px rgba(0,0,0,0.16)"
+  level3: "0px 8px 12px rgba(0,0,0,0.20)"
+  level4: "0px 12px 16px rgba(0,0,0,0.24)"
+  level5: "0px 16px 24px rgba(0,0,0,0.28)"
+
 typography:
   # Display — hero text, one-off large headings (brand font)
   # Token names match --mat-sys-{name}: display-large → var(--mat-sys-display-large)
@@ -207,6 +217,7 @@ components:
     textColor: "{colors.primary}"
     typography: "{typography.label-lg}"
     rounded: "{rounded.full}"
+    shadow: "{elevation.level1}"
     padding: "10px 24px"
     height: 40px
   button-outlined:
@@ -228,6 +239,7 @@ components:
   card-elevated:
     backgroundColor: "{colors.surface-container-low}"
     rounded: "{rounded.md}"
+    shadow: "{elevation.level1}"
     padding: "{spacing.lg}"
   card-filled:
     backgroundColor: "{colors.surface-container-highest}"
@@ -274,11 +286,13 @@ components:
     backgroundColor: "{colors.primary-container}"
     textColor: "{colors.on-primary-container}"
     rounded: "{rounded.lg}"
+    shadow: "{elevation.level3}"
     size: 56px
   fab-small:
     backgroundColor: "{colors.primary-container}"
     textColor: "{colors.on-primary-container}"
     rounded: "{rounded.md}"
+    shadow: "{elevation.level3}"
     size: 40px
 
   # Navigation
@@ -296,6 +310,7 @@ components:
   dialog:
     backgroundColor: "{colors.surface-container-high}"
     rounded: "{rounded.xl}"
+    shadow: "{elevation.level3}"
     padding: "{spacing.xl}"
   snackbar:
     backgroundColor: "{colors.inverse-surface}"
@@ -312,17 +327,6 @@ components:
     textColor: "{colors.on-error}"
     typography: "{typography.label-sm}"
     rounded: "{rounded.full}"
-
-shapes:
-  # Corner radius tokens — M3 defines 7 corner sizes for different component types
-  # Applied as border-radius; CSS variable names: --mat-sys-corner-{name}
-  none: "0"
-  extra-small: "4px"
-  small: "8px"
-  medium: "12px"
-  large: "16px"
-  extra-large: "28px"
-  full: "50px"
 ---
 
 # Angular Material Design System
@@ -626,6 +630,56 @@ confuses hierarchy.
 
 All buttons: `border-radius: full`, `height: 40px`, `label-large` typography, `10px 24px`
 padding (text variant: `10px 12px`). Icon buttons: `40px × 40px`, `border-radius: full`.
+
+### Button States (All Variants)
+
+Every button variant responds to user interaction. This table shows color and styling changes per state:
+
+| Variant | Default BG | Hover BG | Focus BG | Pressed BG | Disabled BG | Disabled Text |
+|---------|-----------|----------|----------|-----------|------------|---|
+| **Filled** | primary | primary (darker) | primary | primary (darker) | surface-container-high | on-surface-variant (30% opacity) |
+| **Tonal** | secondary-container | secondary-container (darker) | secondary-container | secondary-container (darker) | surface-container-high | on-surface-variant (30% opacity) |
+| **Elevated** | surface-container-low | surface-container-low (darker) | surface-container-low | surface-container-low (darker) | surface-container-high | on-surface-variant (30% opacity) |
+| **Outlined** | transparent | surface-container-low | transparent | surface-container-low | transparent | on-surface-variant (30% opacity) |
+| **Text** | transparent | surface-container-low | transparent | surface-container-low | transparent | on-surface-variant (30% opacity) |
+
+**State Details:**
+
+| State | Visual Indicator | Implementation |
+|-------|---|---|
+| **Default** | Resting state | No additional styling |
+| **Hover** | Background color shift (darker) | `:hover` → 8% darker shade of background color |
+| **Focus** | Outline + color shift | `:focus-visible` → 2px primary color outline + darker background |
+| **Pressed** | Stronger color shift + shadow | `:active` → 12% darker shade + level1 shadow |
+| **Disabled** | Muted colors, no interaction | `:disabled` → surface-container-high background, 30% opacity text |
+
+**CSS Example:**
+```scss
+button[mat-flat-button] {
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  
+  &:hover {
+    background-color: var(--mat-sys-primary-hover);  // Darker shade
+  }
+  
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
+  
+  &:active {
+    background-color: var(--mat-sys-primary-pressed);  // Even darker
+    box-shadow: var(--mat-sys-level1);
+  }
+  
+  &:disabled {
+    background-color: var(--mat-sys-surface-container-high);
+    color: var(--mat-sys-on-surface-variant);
+    opacity: 0.38;
+  }
+}
+```
 
 ### Form Fields
 
