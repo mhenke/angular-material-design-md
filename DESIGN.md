@@ -312,6 +312,17 @@ components:
     textColor: "{colors.on-error}"
     typography: "{typography.label-sm}"
     rounded: "{rounded.full}"
+
+shapes:
+  # Corner radius tokens — M3 defines 7 corner sizes for different component types
+  # Applied as border-radius; CSS variable names: --mat-sys-corner-{name}
+  none: "0"
+  extra-small: "4px"
+  small: "8px"
+  medium: "12px"
+  large: "16px"
+  extra-large: "28px"
+  full: "50px"
 ---
 
 # Angular Material Design System
@@ -554,31 +565,44 @@ component must visually detach from all underlying surfaces (menus, FABs, dialog
 
 ## Shapes
 
-M3 corner radius communicates component personality and hierarchy. Angular Material maps shape
-to seven tiers:
+### Corner Radius Token Reference
 
-| Tier | Token | Radius | Components |
-|---|---|---|---|
-| None | `--mat-sys-corner-none` | 0 | Dividers, full-width bottom sheets |
-| Extra-small | `--mat-sys-corner-extra-small` | 4px | Snackbars, tooltips |
-| Small | `--mat-sys-corner-small` | 8px | Chips, outlined text fields |
-| Medium | `--mat-sys-corner-medium` | 12px | Cards |
-| Large | `--mat-sys-corner-large` | 16px | FAB, navigation drawer, datepicker |
-| Extra-large | `--mat-sys-corner-extra-large` | 28px | Dialogs, side sheets, bottom sheets |
-| Full | `--mat-sys-corner-full` | 9999px | Buttons, badges, navigation indicators |
+Material Design 3 defines **7 standard corner sizes**. Each communicates visual hierarchy and component personality:
 
-Directional variants exist for components that are only rounded on some sides:
-`--mat-sys-corner-large-top`, `--mat-sys-corner-large-start`, `--mat-sys-corner-large-end`.
+| Size | Pixel Value | CSS Variable | Components | Visual Meaning |
+|------|------------|---|---|---|
+| **None** | 0 | `--mat-sys-corner-none` | Dividers, full-width bottom sheets | No rounding — structural, spanning |
+| **Extra-small** | 4px | `--mat-sys-corner-extra-small` | Snackbars, tooltips, small indicators | Minimal rounding — tight, dense |
+| **Small** | 8px | `--mat-sys-corner-small` | Chips, outlined text fields, small buttons | Compact rounding — interactive, grouped |
+| **Medium** | 12px | `--mat-sys-corner-medium` | Cards, elevated buttons, medium containers | Standard rounding — balanced, friendly |
+| **Large** | 16px | `--mat-sys-corner-large` | FABs (standard), menus, large containers | Prominent rounding — emphasis, floating |
+| **Extra-large** | 28px | `--mat-sys-corner-extra-large` | Dialogs, bottom sheets, modals | Maximum rounding — full-screen, immersive |
+| **Full** | 50% | `--mat-sys-corner-full` | FABs (small), badges, pill shapes | Fully rounded — badges, toggles |
 
-Apply in custom components:
-
+**Usage in CSS:**
 ```scss
-.my-card {
-  border-radius: var(--mat-sys-corner-medium);
+.mat-card {
+  border-radius: var(--mat-sys-corner-medium);  // 12px
+}
+
+.mat-dialog {
+  border-radius: var(--mat-sys-corner-extra-large);  // 28px
+}
+
+.mat-fab {
+  border-radius: var(--mat-sys-corner-large);  // 16px (standard)
+}
+
+.mat-badge {
+  border-radius: var(--mat-sys-corner-full);  // 50% (fully rounded)
 }
 ```
 
-Utility classes: `.mat-corner-xs` through `.mat-corner-full`.
+**Rule:** Never use arbitrary border-radius values. Always pick from the 7 standard sizes above.
+
+M3 corner radius communicates component personality and hierarchy. Angular Material maps shape
+to seven tiers. Directional variants exist for components that are only rounded on some sides:
+`--mat-sys-corner-large-top`, `--mat-sys-corner-large-start`, `--mat-sys-corner-large-end`.
 
 **Never mix rounded and sharp corners within a single component.** Do not override a component's
 corner radius with a tier that contradicts its category (e.g., do not apply `corner-none` to a
