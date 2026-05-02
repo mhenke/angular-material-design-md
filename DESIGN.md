@@ -1286,6 +1286,30 @@ isRTL() {
 <mat-icon dir="ltr">arrow_forward</mat-icon>
 ```
 
+## Responsive Behavior
+
+Angular Material defines standard breakpoints based on the CDK Layout utilities. Components should adapt fluidly across these widths.
+
+### Breakpoints
+
+| Name | Class | Width | Key Changes |
+|------|-------|-------|-------------|
+| **Handset** | `(max-width: 599.98px)` | < 600px | Single column, mobile nav, bottom sheets |
+| **Tablet** | `(min-width: 600px)` | 600-959.98px | 2-column grid, navigation rail (optional) |
+| **Desktop** | `(min-width: 960px)` | 960-1279.98px | Full layout, permanent sidenav, 3-column grid |
+| **Large** | `(min-width: 1280px)` | > 1280px | Centered content with maximum container width |
+
+### Touch Targets
+- **Minimum tap target:** 48×48px for all interactive elements (WCAG 2.1)
+- **Buttons:** Maintain height of 40px but ensure 8px margin/gap between adjacent targets
+- **Inputs:** Increase spacing between form fields to `spacing.lg` (24px) on mobile
+
+### Collapsing Strategy
+- **Navigation:** Horizontal toolbar links collapse into a `<mat-sidenav>` hamburger menu on Handset.
+- **Hero Type:** `display-large` (57px) scales down to `headline-large` (32px) on Handset.
+- **Grids:** `<mat-grid-list>` columns scale from 3 (Desktop) → 2 (Tablet) → 1 (Handset).
+- **Cards:** Padding reduces from `spacing.lg` (24px) to `spacing.md` (16px) on Handset.
+
 ## Do's and Don'ts
 
 ### Theming
