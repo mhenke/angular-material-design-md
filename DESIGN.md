@@ -1006,6 +1006,91 @@ Material Design 3 uses consistent timing to create a polished, responsive interf
 - **Don't** override `--mat-sys-*` variables directly in plain CSS — use the Sass override APIs
 - **Don't** reference `@angular/material` CSS class internals (`.mat-mdc-*`) — they are private
 
+**Complete Theme Configuration Example:**
+
+Create a file `styles/theme.scss` with this structure:
+
+```scss
+// styles/theme.scss
+@use '@angular/material' as mat;
+
+// Step 1: Include Material core styles
+@include mat.core();
+
+// Step 2: Define your color palette
+$my-colors: (
+  primary: #7d00fa,
+  secondary: #645b70,
+  tertiary: #7d5260,
+  error: #b3261e,
+  warning: #f57c00,
+  success: #4caf50,
+);
+
+// Step 3: Create a complete theme
+$my-theme: mat.define-theme((
+  color: (
+    primary: map-get($my-colors, primary),
+    secondary: map-get($my-colors, secondary),
+    tertiary: map-get($my-colors, tertiary),
+  ),
+  typography: (
+    brand-family: 'Roboto',
+  ),
+  density: 0,  // 0 = default, -1 = compact, -2 = extra-compact (WCAG minimum)
+));
+
+// Step 4: Apply theme to html element
+html {
+  @include mat.theme($my-theme);
+  
+  // Enable Material system utility classes (.mat-primary, .mat-accent, etc.)
+  @include mat.system-classes();
+  
+  // Enable light/dark mode automatic switching
+  color-scheme: light dark;
+}
+
+// Step 5: (Optional) Apply custom color palette to custom components
+.my-custom-component {
+  background-color: var(--mat-sys-surface-container-low);
+  color: var(--mat-sys-on-surface);
+}
+```
+
+**In `index.html`, link the theme:**
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="styles/theme.scss">
+    <!-- Angular Material icons (optional) -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Roboto font (recommended) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+</html>
+```
+
+**Customizing Density:**
+
+```scss
+// Comfortable (default)
+$theme: mat.define-theme(( density: 0 ));
+
+// Compact (dashboards, data-dense UIs)
+$theme: mat.define-theme(( density: -1 ));
+
+// Extra-compact (maximum space savings, at WCAG 2.5.5 limit)
+$theme: mat.define-theme(( density: -2 ));
+
+// ❌ DON'T use density below -2 (fails touch target WCAG success criterion 2.5.5)
+```
+
 ### Component Code
 
 - **Do** use the `host` object in `@Component`/`@Directive` config for host bindings:
