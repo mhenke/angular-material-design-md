@@ -1035,6 +1035,96 @@ Material Design 3 uses a predictable z-index scale for all floating and overlaid
 }
 ```
 
+## Component Composition & Nesting
+
+Material Design 3 components are designed to work together. This section clarifies valid and invalid nesting patterns to guide agent composition.
+
+### Valid Component Combinations
+
+| Parent | Valid Children | Example Use Case |
+|--------|---|---|
+| **Card** | Text, buttons, icons, images | Standard content card with actions |
+| **Card** | Form fields, inputs, checkboxes | Data entry card |
+| **Card** | Nested components (menu, chip) | Rich card with secondary interactions |
+| **Dialog** | Card, heading, text, buttons | Modal with content card |
+| **Dialog** | Form field, input, textarea | Modal form |
+| **Form** | Input field, select, checkbox, radio | Standard form |
+| **Form** | Button, text button | Form submit/cancel actions |
+| **Menu** | Checkbox, radio button | Menu with selections |
+| **Menu** | Text, divider | Menu items with separators |
+| **Table** | Button, icon, chip, checkbox | Data table with actions |
+| **Table** | Nested expandable row | Hierarchical data |
+| **Drawer** | Navigation item, nested menu | Navigation structure |
+| **Drawer** | Divider, text section | Drawer organization |
+| **Toolbar/AppBar** | Icon button, menu, chip, text | Top app bar with controls |
+| **Chip** | Icon, avatar, text | Chip with icon/avatar |
+| **Bottom Sheet** | Card, list item, button | Mobile bottom action sheet |
+
+### Invalid/Problematic Combinations
+
+| Pattern | Problem | Alternative |
+|---------|---------|---|
+| **Card inside Card** | Creates visual confusion; poor hierarchy | Use separate cards or subsections within one card |
+| **Dialog inside Dialog** | Stacking modals confuses UX; focus trap issues | Use separate sequential dialogs or combine content |
+| **Menu inside Menu** | Difficult to navigate; deep nesting | Use single flat menu or accordion instead |
+| **Form inside Form** | Nested form submission conflicts | Use single form with sections/tabs |
+| **Button inside Button** | Invalid HTML; dual interaction targets | Use single button with icon + label |
+| **Select inside Select** | Cascading selects are UX-confusing | Use separate controls or dependent selects |
+| **Nested Drawers** | Multiple drawers open simultaneously = UX nightmare | Use single drawer with tabs/sections |
+
+### Layout Patterns
+
+**Card with Footer Actions:**
+```html
+<mat-card>
+  <mat-card-content>
+    <!-- Content here -->
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button>Cancel</button>
+    <button mat-flat-button color="primary">Save</button>
+  </mat-card-actions>
+</mat-card>
+```
+
+**Form in Dialog:**
+```html
+<mat-dialog-container>
+  <h2 mat-dialog-title>Edit Profile</h2>
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button>Cancel</button>
+    <button mat-flat-button color="primary">Save</button>
+  </mat-dialog-actions>
+</mat-dialog-container>
+```
+
+**Table with Inline Actions:**
+```html
+<table mat-table [dataSource]="data">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell>Name</th>
+    <td mat-cell>{{ element.name }}</td>
+  </ng-container>
+  
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell>Actions</th>
+    <td mat-cell>
+      <button mat-icon-button><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button><mat-icon>delete</mat-icon></button>
+    </td>
+  </ng-container>
+  
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+```
+
 ## Do's and Don'ts
 
 ### Theming
