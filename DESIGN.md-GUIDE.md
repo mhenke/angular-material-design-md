@@ -445,3 +445,114 @@ Stripe uses precision spacing, not generous emptiness. Every gap is a deliberate
 - One prompt per major surface minimum: hero, card, nav. Add badge, dark section, and form if your system has them.
 
 ---
+
+## Patterns & Anti-Patterns
+
+Distilled from 70+ DESIGN.md files. These are the decisions that separate files that generate consistent, on-brand UI from files that produce generic output.
+
+---
+
+### Colors
+
+**Do: semantic naming over hex dumps**
+Every color needs a functional role. An agent reading `#533afd` has no idea when to use it. An agent reading `Primary CTA background, link text, interactive highlights` knows exactly when to reach for it.
+
+**Do: include shadow colors in the palette**
+Shadow colors are brand decisions. `rgba(50,50,93,0.25)` — Stripe's blue-tinted shadow — is as much a brand token as the purple CTA. If your shadow color echoes the brand palette, name it and explain it. Agents that don't understand shadow color intent will replace it with neutral gray.
+
+**Do: include at least one dark surface even in light-mode systems**
+Nearly every system uses dark sections for brand moments, hero footers, or call-to-action bands. If you don't document `brand-dark` or `canvas-inverse`, agents will improvise.
+
+**Anti-pattern: palette without roles**
+
+~~~markdown
+<!-- Bad -->
+- `#533afd`
+- `#061b31`
+- `#64748d`
+
+<!-- Good -->
+- **Stripe Purple** (`#533afd`): Primary CTA, link text, interactive highlights
+- **Deep Navy** (`#061b31`): Headings — not black, a dark blue that adds warmth
+- **Slate** (`#64748d`): Body text, descriptions, captions
+~~~
+
+---
+
+### Typography
+
+**Do: include fallback stacks**
+When a custom font (`sohne-var`, `Linear Display`, `Geist`) is unavailable, agents use the fallback. Without one, the output uses the browser default — Times New Roman or Arial — which breaks the design before a single color is rendered.
+
+**Do: use exact letter-spacing values**
+Letter-spacing is identity. `-1.4px` at 56px is not "tight" — it's a specific, measurable choice. Agents that see only "tight" will apply their own interpretation, producing output that looks almost-right but not right.
+
+**Do: document OpenType features**
+`"ss01"` can transform a font's entire character. Stripe's sohne-var without `"ss01"` looks like a different typeface. Vercel's Geist without `"liga"` loses typographic polish. Skipping OpenType features produces generically-correct but brand-wrong output.
+
+**Anti-pattern: incomplete hierarchy table**
+
+~~~markdown
+<!-- Bad -->
+| Role | Size | Weight |
+|------|------|--------|
+| Heading | 48px | bold |
+
+<!-- Good -->
+| Role | Font | Size | Weight | Line Height | Letter Spacing | Notes |
+|------|------|------|--------|-------------|----------------|-------|
+| Display Hero | sohne-var | 56px | 300 | 1.03 | -1.4px | "ss01" |
+~~~
+
+---
+
+### Section 1 (Visual Theme) Quality
+
+**Do: name the emotional register**
+"Dark and minimal" describes half the developer tool market. "Deep-space command terminal for the AI age" (VoltAgent) or "fintech redesigned by a world-class type foundry" (Stripe) gives an agent a creative constraint it can apply across surfaces you didn't explicitly design.
+
+**Do: name the single most distinctive element**
+Every strong design system has one defining differentiator — the thing that makes it unmistakable even in a screenshot. Name it explicitly. For Stripe: the weight-300 headlines. For Vercel: the shadow-as-border technique. For Linear: the near-pure-black `#010102` canvas. Agents use this as a north star when generating new surfaces.
+
+**Anti-pattern: vague descriptors without anchors**
+
+~~~markdown
+<!-- Bad -->
+The site has a clean, modern, minimal design with a professional feel.
+
+<!-- Good -->
+The defining element is the weight-300 headline system — an extraordinarily light weight at display
+sizes that reads as confident and premium. Where others use 600–700 to command attention,
+this system uses lightness as luxury.
+~~~
+
+---
+
+### Section 9 (Agent Prompt Guide)
+
+This is the section agents reach for first in practice. Files without it require agents to re-read nine sections and reconstruct prompts themselves — introducing inconsistency at every step.
+
+**Do: include one prompt per major surface**
+At minimum: hero, card, navigation. Add form, badge, and dark section if your system uses them. Prompts should be dense and literal — the agent pastes them directly into its working context.
+
+**Do: make iteration tips address counterintuitive rules**
+The iteration tips section exists specifically for rules agents override by default. If your system uses weight 300 at display sizes, that's an iteration tip. If your shadow is brand-colored, that's an iteration tip. Tips that state obvious conventions (use your brand color for CTAs) waste the agent's context window.
+
+---
+
+### Anti-Pattern Summary
+
+| What's missing | Effect on generated output |
+|----------------|---------------------------|
+| Color roles | Agent invents color usage; inconsistent UI |
+| Font fallback stack | Broken typography when custom font unavailable |
+| Exact letter-spacing values | Almost-right tracking; looks amateur at display sizes |
+| OpenType feature flags | Wrong character shapes; entire font personality lost |
+| Component states (hover/focus/disabled) | Flat, non-interactive-feeling UI |
+| Shadow colors in palette | Brand shadows replaced with generic neutral gray |
+| Section 9 (Agent Prompt Guide) | Inconsistent output; agent re-derives specs each time |
+| Responsive collapsing strategy | Correct breakpoints but wrong behavior at each break |
+| Touch targets | Untappable mobile UI |
+| Section 1 emotional register | Technically correct but brand-wrong aesthetic |
+
+---
