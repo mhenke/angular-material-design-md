@@ -174,3 +174,63 @@ typography:
 - OpenType features are often skipped and almost always important — `"ss01"` can change the entire character of a font
 
 ---
+
+### 4. Component Stylings
+
+**Purpose:** Give agents exact, state-complete specs for every interactive UI element so generated components match the system without guessing.
+
+**What to include:**
+- Buttons: every variant (primary, secondary/ghost, disabled, destructive) with all states
+- Cards & containers
+- Inputs & forms (label, placeholder, focus, error states)
+- Navigation (desktop and mobile treatment)
+- Badges / tags / pills
+- Per component: background, text color, padding, border-radius, border, hover state, focus state, active/pressed state
+
+**Annotated example:**
+
+~~~markdown
+## 4. Component Stylings
+
+### Buttons
+
+**Primary**
+- Background: `#533afd`
+- Text: `#ffffff`, 16px sohne-var weight 400, `"ss01"`
+- Padding: `8px 16px`
+- Radius: `4px`
+- Hover: background `#4434d4`
+- Focus: `2px solid #533afd` outline offset `2px`
+- Disabled: `opacity: 0.4`, cursor not-allowed
+
+**Ghost / Outlined**
+- Background: transparent
+- Text: `#533afd`
+- Border: `1px solid #b9b9f9`
+- Padding: `8px 16px`
+- Radius: `4px`
+- Hover: background `rgba(83,58,253,0.05)`
+
+### Cards
+- Background: `#ffffff`
+- Border: `1px solid #e5edf5`
+- Radius: `6px`
+- Shadow: `rgba(50,50,93,0.25) 0px 30px 45px -30px, rgba(0,0,0,0.1) 0px 18px 36px -18px`
+- Hover: shadow intensifies
+
+### Inputs
+- Border: `1px solid #e5edf5`
+- Radius: `4px`
+- Focus: `1px solid #533afd`
+- Label: `#273951`, 14px
+- Placeholder: `#64748d`
+- Error: `1px solid #ea2261`, label color `#ea2261`
+~~~
+
+**Writing guidance:**
+- State completeness is the most common failure: a component described only in its default state will be generated with no hover/focus/disabled behavior
+- Padding values must be explicit (`8px 16px`), not described in prose ("comfortable padding")
+- Navigation must address both desktop (horizontal links + CTA) and mobile (hamburger collapse) — agents building responsive layouts need both
+- If a component variant is used only in specific contexts, note when to use it
+
+---
