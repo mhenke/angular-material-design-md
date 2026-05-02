@@ -216,7 +216,7 @@ typography:
 - Border: `1px solid #e5edf5`
 - Radius: `6px`
 - Shadow: `rgba(50,50,93,0.25) 0px 30px 45px -30px, rgba(0,0,0,0.1) 0px 18px 36px -18px`
-- Hover: shadow intensifies
+- Hover: `rgba(50,50,93,0.35) 0px 30px 45px -30px, rgba(0,0,0,0.15) 0px 18px 36px -18px`
 
 ### Inputs
 - Border: `1px solid #e5edf5`
@@ -225,6 +225,23 @@ typography:
 - Label: `#273951`, 14px
 - Placeholder: `#64748d`
 - Error: `1px solid #ea2261`, label color `#ea2261`
+
+### Navigation
+
+**Desktop**
+- Background: `#ffffff`, sticky, `backdrop-filter: blur(12px)`
+- Links: 14px sohne-var weight 400, `#061b31`, `"ss01"`, hover color `#533afd`
+- CTA: primary purple button right-aligned
+
+**Mobile**
+- Hamburger toggle reveals stacked links
+- Links: 16px, full-width tap targets
+
+### Badges / Tags
+- Background: `rgba(21,190,83,0.2)`
+- Text: `#108c3d`, 10px weight 300
+- Padding: `1px 6px`, radius `4px`
+- Border: `1px solid rgba(21,190,83,0.4)`
 ~~~
 
 **Writing guidance:**
