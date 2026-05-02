@@ -63,14 +63,14 @@ colors:
   shadow: "#000000"
 
 elevation:
-  # Shadow levels — six elevation levels (0-5) with progressively stronger shadows
-  # Applied as box-shadow; CSS variable names: --mat-sys-level{N}
+  # Tonal elevation levels — M3 primarily uses surface tones, with shadows as secondary depth
+  # CSS variable names: --mat-sys-level{0-5}
   level0: "none"
-  level1: "0px 2px 6px rgba(0,0,0,0.12)"
-  level2: "0px 4px 8px rgba(0,0,0,0.16)"
-  level3: "0px 8px 12px rgba(0,0,0,0.20)"
-  level4: "0px 12px 16px rgba(0,0,0,0.24)"
-  level5: "0px 16px 24px rgba(0,0,0,0.28)"
+  level1: "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)"
+  level2: "0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)"
+  level3: "0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)"
+  level4: "0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12)"
+  level5: "0px 7px 8px -4px rgba(0,0,0,0.2), 0px 12px 17px 2px rgba(0,0,0,0.14), 0px 5px 22px 4px rgba(0,0,0,0.12)"
 
 typography:
   # Display — hero text, one-off large headings (brand font)
@@ -543,54 +543,6 @@ M3 communicates depth through **tonal elevation** as the primary signal and **sh
 secondary signal. Tonal elevation uses `surface-tint` mixed into surface containers — higher
 containers appear slightly more chromatic, implying they sit above the page surface.
 
-### Elevation Levels and Shadow Values
-
-All shadows in Material Design 3 follow a consistent progression. Use these exact box-shadow values:
-
-| Level | Box-Shadow | Blur | Offset | Use Case |
-|-------|-----------|------|--------|----------|
-| **0** | none | — | — | Flush surfaces, no separation (background, main surface) |
-| **1** | `0px 2px 6px rgba(0,0,0,0.12)` | 6px | 2px down | Slight elevation (empty state, subtle cards) |
-| **2** | `0px 4px 8px rgba(0,0,0,0.16)` | 8px | 4px down | Raised components (cards, chips, FAB at rest) |
-| **3** | `0px 8px 12px rgba(0,0,0,0.20)` | 12px | 8px down | Floating components (menus, select panels, FAB at rest) |
-| **4** | `0px 12px 16px rgba(0,0,0,0.24)` | 16px | 12px down | Hovered/focus state (FAB on hover, elevated dialog) |
-| **5** | `0px 16px 24px rgba(0,0,0,0.28)` | 24px | 16px down | Maximum emphasis (modal feedback, critical interactions) |
-
-**Component Elevation Mapping:**
-
-| Component | Default Shadow | Hover Shadow | Notes |
-|-----------|---|---|---|
-| **Card** (elevated) | level1 | level2 | Raised default, slight emphasis on hover |
-| **Card** (outlined) | level0 | level0 | No shadow; relies on outline border |
-| **Button** (filled) | level0 | level1 | Flat default, slight lift on hover |
-| **Button** (elevated) | level1 | level2 | Pre-elevated; stronger on hover |
-| **Menu/Select** | level3 | level3 | Floating by default; no hover change |
-| **Dialog** | level4 | level4 | High elevation; fixed |
-| **FAB** (standard) | level3 | level4 | Floating; lifts on hover |
-| **Snackbar** | level3 | level3 | Floating; no interaction |
-| **Chip** (elevated) | level1 | level1 | Optional shadow |
-| **Bottom sheet** | level3 | level3 | Floating overlay |
-
-**CSS Usage:**
-```scss
-.mat-card-elevated {
-  box-shadow: var(--mat-sys-level1);  // Default
-  
-  &:hover {
-    box-shadow: var(--mat-sys-level2);  // On hover
-  }
-}
-
-.mat-fab {
-  box-shadow: var(--mat-sys-level3);
-  
-  &:hover,
-  &:focus {
-    box-shadow: var(--mat-sys-level4);
-  }
-}
-```
-
 Shadow levels supplement tonal elevation for components that physically float above the layout:
 
 | Level | Token | Use case |
@@ -629,7 +581,7 @@ Material Design 3 defines **7 standard corner sizes**. Each communicates visual 
 | **Medium** | 12px | `--mat-sys-corner-medium` | Cards, elevated buttons, medium containers | Standard rounding — balanced, friendly |
 | **Large** | 16px | `--mat-sys-corner-large` | FABs (standard), menus, large containers | Prominent rounding — emphasis, floating |
 | **Extra-large** | 28px | `--mat-sys-corner-extra-large` | Dialogs, bottom sheets, modals | Maximum rounding — full-screen, immersive |
-| **Full** | 50% | `--mat-sys-corner-full` | FABs (small), badges, pill shapes | Fully rounded — badges, toggles |
+| **Full** | 9999px | `--mat-sys-corner-full` | FABs (small), badges, pill shapes | Fully rounded — badges, toggles |
 
 **Usage in CSS:**
 ```scss
@@ -646,7 +598,7 @@ Material Design 3 defines **7 standard corner sizes**. Each communicates visual 
 }
 
 .mat-badge {
-  border-radius: var(--mat-sys-corner-full);  // 50% (fully rounded)
+  border-radius: var(--mat-sys-corner-full);  // 9999px (fully rounded)
 }
 ```
 
@@ -871,3 +823,33 @@ per screen.
 - **Do** use `MatIconRegistry` to register custom SVG icons with `DomSanitizer`
 - **Do** use `mat-icon` with `fontSet` for non-Material icon libraries
 - **Don't** inline SVG directly in templates — register and reference via `mat-icon`
+
+## Agent Prompt Guide
+
+### Quick Color Reference
+| Role | Hex | CSS Variable |
+|------|-----|--------------|
+| Primary | `#7d00fa` | `--mat-sys-primary` |
+| On Primary | `#ffffff` | `--mat-sys-on-primary` |
+| Surface | `#fef8fc` | `--mat-sys-surface` |
+| On Surface | `#1d1b1e` | `--mat-sys-on-surface` |
+| Secondary Container | `#eadef7` | `--mat-sys-secondary-container` |
+| Outline | `#7b757f` | `--mat-sys-outline` |
+
+### Example Component Prompts
+
+**Elevated Button:**
+"Angular Material elevated button (`mat-raised-button`). Background: var(--mat-sys-surface-container-low), text: var(--mat-sys-primary), shadow: var(--mat-sys-level1), radius: var(--mat-sys-corner-full)."
+
+**Standard Card:**
+"Angular Material card (`mat-card`). Background: var(--mat-sys-surface-container-low), shadow: var(--mat-sys-level1), radius: var(--mat-sys-corner-medium) (12px). Padding: var(--mat-sys-spacing-lg) (24px)."
+
+**Outlined Form Field:**
+"Angular Material form field (`mat-form-field`) with `appearance=\"outline\"`. Border: var(--mat-sys-outline), radius: var(--mat-sys-corner-extra-small) (4px). Typography: var(--mat-sys-body-large)."
+
+### Iteration Tips
+1. **Never hardcode hex values** in component CSS. Always use `var(--mat-sys-*)` tokens.
+2. **Use light-dark()** for color properties that must adapt to theme: `color: light-dark(var(--mat-sys-primary), var(--mat-sys-inverse-primary))`.
+3. **8px Grid:** All spacing and padding should use `var(--mat-sys-spacing-*)` variables.
+4. **Corner Radius:** Only use the 7 standard levels: `none`, `extra-small`, `small`, `medium`, `large`, `extra-large`, `full`.
+5. **Tonal Elevation:** Prefer `surface-container` tiers over box-shadows for grouping content.
