@@ -390,3 +390,58 @@ Stripe uses precision spacing, not generous emptiness. Every gap is a deliberate
 - Name what stays the same across breakpoints, not just what changes (e.g., "weight 300 maintained")
 
 ---
+
+### 9. Agent Prompt Guide
+
+**Purpose:** The section agents reach for first. Provides ready-to-paste color references and component prompts that generate correct output on the first attempt.
+
+**What to include:**
+- Quick color reference table: Role → Hex (8–12 rows, the colors agents use most)
+- 4–5 example component prompts, one per major surface (hero, card, nav, badge, dark section)
+- Iteration tips: numbered list of rules for agents to apply when refining generated output
+
+**This is the most-skipped and highest-value section.** Files without it require agents to re-read the entire document and reconstruct prompts themselves, producing inconsistent output.
+
+**Annotated example:**
+
+~~~markdown
+## 9. Agent Prompt Guide
+
+### Quick Color Reference
+| Role | Hex |
+|------|-----|
+| Primary CTA | `#533afd` |
+| CTA Hover | `#4434d4` |
+| Background | `#ffffff` |
+| Heading text | `#061b31` |
+| Body text | `#64748d` |
+| Border | `#e5edf5` |
+| Dark section bg | `#1c1e54` |
+| Success | `#15be53` |
+
+### Example Component Prompts
+
+**Hero section:**
+"White background. Headline 48px sohne-var weight 300, line-height 1.15, letter-spacing -0.96px, color #061b31, font-feature-settings 'ss01'. Subtitle 18px weight 300, line-height 1.40, color #64748d. Purple CTA (#533afd, 4px radius, 8px 16px padding, white text). Ghost button (transparent, 1px solid #b9b9f9, #533afd text)."
+
+**Card:**
+"White background, 1px solid #e5edf5 border, 6px radius. Shadow: rgba(50,50,93,0.25) 0px 30px 45px -30px, rgba(0,0,0,0.1) 0px 18px 36px -18px. Title 22px sohne-var weight 300, letter-spacing -0.22px, color #061b31, 'ss01'. Body 16px weight 300, #64748d."
+
+**Navigation:**
+"White sticky header, backdrop-filter blur(12px). Links: 14px sohne-var weight 400, #061b31, 'ss01'. Purple CTA 'Start now' right-aligned (#533afd, white text, 4px radius)."
+
+### Iteration Tips
+1. Always set `font-feature-settings: "ss01"` on sohne-var — this is non-negotiable
+2. Weight 300 is the default; use 400 only for buttons, links, and navigation
+3. Shadow formula: `rgba(50,50,93,0.25) 0px Y1 B1 -S1, rgba(0,0,0,0.1) 0px Y2 B2 -S2`
+4. Heading color is `#061b31`, body is `#64748d`, labels are `#273951`
+5. Dark sections use `#1c1e54` — not black, not gray
+~~~
+
+**Writing guidance:**
+- The quick color reference table should cover the ~10 colors agents reach for when writing prompts — not the full palette
+- Component prompts should be dense and literal — agents paste them into their context, so they must be self-contained
+- Iteration tips should address the most counterintuitive rules (the things agents override by default)
+- One prompt per major surface minimum: hero, card, nav. Add badge, dark section, and form if your system has them.
+
+---
