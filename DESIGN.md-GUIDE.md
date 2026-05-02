@@ -65,3 +65,51 @@ geometric, modern feel.
 - The Key Characteristics list should be what agents scan first — make each bullet self-contained
 
 ---
+
+### 2. Color Palette & Roles
+
+**Purpose:** Define every color the system uses, organized by function — not as a gallery, but as a lookup table agents can query by role.
+
+**What to include:**
+- Organized sub-groups: Primary, Secondary/Accent, Surfaces, Neutrals, Shadows, Semantic (success/error/warning)
+- Per color: semantic name + hex value + CSS variable name (if known) + one-sentence functional role
+- Shadow colors as first-class entries — they are brand decisions, not implementation details
+- At least one dark surface even in light-mode systems
+
+**Annotated example (markdown format):**
+
+~~~markdown
+## 2. Color Palette & Roles
+
+### Primary
+- **Stripe Purple** (`#533afd`): Primary brand color, CTA backgrounds, link text, interactive highlights.
+- **Deep Navy** (`#061b31`): `--hds-color-heading-solid`. Primary heading color — not black, a very dark blue adding warmth.
+- **Pure White** (`#ffffff`): Page background, card surfaces, button text on dark.
+
+### Shadow Colors
+- **Shadow Blue** (`rgba(50,50,93,0.25)`): The signature — blue-tinted primary shadow. Echoes the navy-purple brand palette.
+- **Shadow Black** (`rgba(0,0,0,0.1)`): Secondary shadow layer for depth reinforcement.
+~~~
+
+**YAML-frontmatter variant:**
+
+~~~yaml
+colors:
+  primary: "#533afd"
+  on-primary: "#ffffff"
+  ink: "#061b31"
+  canvas: "#ffffff"
+  surface-1: "#f6f9fc"
+  hairline: "#e5edf5"
+  shadow-brand: "rgba(50,50,93,0.25)"
+  shadow-neutral: "rgba(0,0,0,0.1)"
+~~~
+
+In the YAML variant, use semantic key names (`ink`, `canvas`, `hairline`, `on-primary`) rather than brand names. The YAML format is consumed programmatically; the markdown format is read by agents as prose.
+
+**Writing guidance:**
+- Never list colors without roles — a hex dump with no context is useless to an agent
+- Group shadows separately; agents treat them as elevation tokens, not palette entries
+- Include the CSS variable name when you know it — agents can use it to reference the live site's token
+
+---
