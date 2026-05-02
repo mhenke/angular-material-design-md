@@ -543,6 +543,54 @@ M3 communicates depth through **tonal elevation** as the primary signal and **sh
 secondary signal. Tonal elevation uses `surface-tint` mixed into surface containers — higher
 containers appear slightly more chromatic, implying they sit above the page surface.
 
+### Elevation Levels and Shadow Values
+
+All shadows in Material Design 3 follow a consistent progression. Use these exact box-shadow values:
+
+| Level | Box-Shadow | Blur | Offset | Use Case |
+|-------|-----------|------|--------|----------|
+| **0** | none | — | — | Flush surfaces, no separation (background, main surface) |
+| **1** | `0px 2px 6px rgba(0,0,0,0.12)` | 6px | 2px down | Slight elevation (empty state, subtle cards) |
+| **2** | `0px 4px 8px rgba(0,0,0,0.16)` | 8px | 4px down | Raised components (cards, chips, FAB at rest) |
+| **3** | `0px 8px 12px rgba(0,0,0,0.20)` | 12px | 8px down | Floating components (menus, select panels, FAB at rest) |
+| **4** | `0px 12px 16px rgba(0,0,0,0.24)` | 16px | 12px down | Hovered/focus state (FAB on hover, elevated dialog) |
+| **5** | `0px 16px 24px rgba(0,0,0,0.28)` | 24px | 16px down | Maximum emphasis (modal feedback, critical interactions) |
+
+**Component Elevation Mapping:**
+
+| Component | Default Shadow | Hover Shadow | Notes |
+|-----------|---|---|---|
+| **Card** (elevated) | level1 | level2 | Raised default, slight emphasis on hover |
+| **Card** (outlined) | level0 | level0 | No shadow; relies on outline border |
+| **Button** (filled) | level0 | level1 | Flat default, slight lift on hover |
+| **Button** (elevated) | level1 | level2 | Pre-elevated; stronger on hover |
+| **Menu/Select** | level3 | level3 | Floating by default; no hover change |
+| **Dialog** | level4 | level4 | High elevation; fixed |
+| **FAB** (standard) | level3 | level4 | Floating; lifts on hover |
+| **Snackbar** | level3 | level3 | Floating; no interaction |
+| **Chip** (elevated) | level1 | level1 | Optional shadow |
+| **Bottom sheet** | level3 | level3 | Floating overlay |
+
+**CSS Usage:**
+```scss
+.mat-card-elevated {
+  box-shadow: var(--mat-sys-level1);  // Default
+  
+  &:hover {
+    box-shadow: var(--mat-sys-level2);  // On hover
+  }
+}
+
+.mat-fab {
+  box-shadow: var(--mat-sys-level3);
+  
+  &:hover,
+  &:focus {
+    box-shadow: var(--mat-sys-level4);
+  }
+}
+```
+
 Shadow levels supplement tonal elevation for components that physically float above the layout:
 
 | Level | Token | Use case |
