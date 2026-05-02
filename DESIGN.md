@@ -743,6 +743,88 @@ Both appearances support: floating label, prefix/suffix icons, hint text, error 
 The `<mat-form-field>` wrapper provides these; the inner control (`matInput`, `mat-select`, etc.)
 does not render them independently.
 
+### Form Field States
+
+Material Design 3 form fields respond to user interaction with color, thickness, and icon changes:
+
+| State | Container BG | Border/Underline | Label Color | Input Text Color | Icon Color |
+|-------|-------------|---|---|---|---|
+| **Idle** (empty) | surface-container-high | outline-variant | on-surface-variant | — | on-surface-variant |
+| **Hover** (empty) | surface-container-high | outline | on-surface-variant | — | on-surface-variant |
+| **Focus** (empty) | surface-container-high | primary (2px thick) | primary | on-surface | primary |
+| **Focus** (filled) | surface-container-high | primary (2px thick) | on-surface | on-surface | primary |
+| **Error** | surface-container-high | error (2px thick) | error | on-surface | error |
+| **Disabled** | surface-container-highest | outline-variant (1px, dashed) | on-surface-variant (30% opacity) | on-surface-variant (30% opacity) | on-surface-variant (30% opacity) |
+
+**Implementation Details:**
+
+```scss
+mat-form-field {
+  // Idle state (no focus, no input)
+  &.mat-form-field-appearance-fill {
+    background-color: var(--mat-sys-surface-container-high);
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+  }
+  
+  // Hover state
+  &:hover {
+    border-bottom-color: var(--mat-sys-outline);  // Darker line on hover
+  }
+  
+  // Focus state
+  &.mat-focused {
+    border-bottom: 2px solid var(--mat-sys-primary);
+    
+    .mat-mdc-form-field-label {
+      color: var(--mat-sys-primary);
+    }
+    
+    .mat-mdc-form-field-icon-prefix,
+    .mat-mdc-form-field-icon-suffix {
+      color: var(--mat-sys-primary);
+    }
+  }
+  
+  // Error state
+  &.mat-form-field-invalid {
+    border-bottom: 2px solid var(--mat-sys-error);
+    
+    .mat-mdc-form-field-label,
+    .mat-mdc-form-field-error {
+      color: var(--mat-sys-error);
+    }
+  }
+  
+  // Disabled state
+  &.mat-form-field-disabled {
+    background-color: var(--mat-sys-surface-container-highest);
+    border-bottom: 1px dashed var(--mat-sys-outline-variant);
+    
+    .mat-mdc-form-field-label,
+    .mat-mdc-text-field-wrapper {
+      color: var(--mat-sys-on-surface-variant);
+      opacity: 0.38;
+    }
+  }
+}
+```
+
+**Error Message Styling:**
+
+```html
+<mat-form-field>
+  <mat-label>Email</mat-label>
+  <input matInput type="email" required>
+  <mat-error>Must be a valid email</mat-error>
+  <mat-hint>example@domain.com</mat-hint>
+</mat-form-field>
+```
+
+- **mat-error**: Shown on invalid state; color = error
+- **mat-hint**: Shown below field; color = on-surface-variant, size = body-small
+- Error message font-size: `body-small` (12px)
+- Hint text font-size: `body-small` (12px)
+
 ### Cards
 
 Three variants via the `appearance` input on `<mat-card>`:
