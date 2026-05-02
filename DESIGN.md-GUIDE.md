@@ -310,3 +310,83 @@ Stripe uses precision spacing, not generous emptiness. Every gap is a deliberate
 - Multi-layer shadows should be shown verbatim; agents cannot infer the formula from a description
 
 ---
+
+### 7. Do's and Don'ts
+
+**Purpose:** State the design guardrails as explicit rules — the constraints agents must respect even when generating output that "looks fine" to a human eye.
+
+**What to include:**
+- Minimum 6 items per side
+- Each rule tied to the system's actual design decisions, not generic advice
+- Rules phrased specifically enough that violating them produces a measurably wrong output
+
+**Annotated example:**
+
+~~~markdown
+## 7. Do's and Don'ts
+
+### Do
+- Use sohne-var with `"ss01"` on every text element — the stylistic set IS the brand
+- Use weight 300 for all headlines — lightness is the signature
+- Apply blue-tinted shadows (`rgba(50,50,93,0.25)`) for all elevated elements
+- Use `#061b31` (deep navy) for headings, not `#000000` — the warmth matters
+- Keep border-radius between 4px–8px — conservative rounding is intentional
+- Use `"tnum"` for any tabular or financial number display
+
+### Don't
+- Don't use weight 600–700 for sohne-var headlines — weight 300 is the brand voice
+- Don't use large border-radius (12px+, pill shapes) on cards or buttons
+- Don't use neutral gray shadows — always tint with blue (`rgba(50,50,93,...)`)
+- Don't skip `"ss01"` on any sohne-var text
+- Don't use pure black (`#000000`) for headings — always `#061b31`
+- Don't apply positive letter-spacing at display sizes — Stripe tracks tight
+~~~
+
+**Writing guidance:**
+- Vague don'ts are worse than no don'ts: "don't make it look bad" provides no constraint
+- The best rules are counterintuitive ones — things an agent would get "wrong" by default (weight 300 at hero size, blue-tinted shadows, navy instead of black)
+- Each "Don't" should have a corresponding "Do" — agents need the correct path, not just the wrong one
+
+---
+
+### 8. Responsive Behavior
+
+**Purpose:** Define how the system degrades across viewport widths so agents building responsive layouts have an unambiguous strategy.
+
+**What to include:**
+- Breakpoint table: Name | Width | Key Changes
+- Touch target minimums (mobile tap targets)
+- Collapsing strategy for: navigation, hero type scale, feature grids, section spacing
+
+**Annotated example:**
+
+~~~markdown
+## 8. Responsive Behavior
+
+### Breakpoints
+
+| Name | Width | Key Changes |
+|------|-------|-------------|
+| Mobile | <640px | Single column, reduced heading sizes, stacked cards |
+| Tablet | 640–1024px | 2-column grids, moderate padding |
+| Desktop | 1024–1280px | Full layout, 3-column feature grids |
+| Large | >1280px | Centered content, generous margins |
+
+### Touch Targets
+- Minimum tap target: 44×44px on mobile
+- Buttons: at least 8px vertical padding
+- Nav links: adequate horizontal spacing for thumb navigation
+
+### Collapsing Strategy
+- Hero type: 56px → 32px, weight 300 maintained
+- Navigation: horizontal links + CTAs → hamburger toggle
+- Feature cards: 3-column → 2-column → single column
+- Section spacing: `64px` → `40px` on mobile
+~~~
+
+**Writing guidance:**
+- The collapsing strategy section is what most agents actually need — breakpoints alone don't explain *how* things change
+- Touch targets are almost always omitted; include them to prevent agents from generating untappable mobile UI
+- Name what stays the same across breakpoints, not just what changes (e.g., "weight 300 maintained")
+
+---
