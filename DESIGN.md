@@ -894,6 +894,106 @@ Corner radius: `corner-large` (16px) for standard, `corner-medium` (12px) for sm
 Use FAB only for the single most important action on a screen. Never show more than one FAB
 per screen.
 
+## Animations & Transitions
+
+Material Design 3 uses consistent timing to create a polished, responsive interface. All animations follow two principles: **motion has purpose** (no gratuitous animations) and **fast interactions feel snappy** (200-300ms).
+
+### Animation Timing Standards
+
+**Interaction feedback (state changes within view):** 200ms
+
+- Button ripple effect
+- Checkbox/radio state change
+- Menu item hover
+- Icon state toggle
+- Form field focus (underline thickness)
+
+**Menu and drawer interactions:** 300ms
+
+- Menu open/close (dropdown, select)
+- Drawer slide in/out (navigation drawer, side panel)
+- Dialog entrance/exit
+- Modal fade-in/fade-out
+
+**Easing Curves:**
+
+| Easing | Cubic-Bezier | Use Case |
+|--------|---|---|
+| **Ease-out** | `cubic-bezier(0.05, 0.7, 0.1, 1.0)` | Opening, appearing, expanding (200ms interactions) |
+| **Ease-in** | `cubic-bezier(0.4, 0, 0.95, 0.2)` | Closing, disappearing, collapsing (200ms interactions) |
+| **Standard** | `cubic-bezier(0.4, 0, 0.2, 1)` | State changes, emphasis shifts (100-200ms) |
+
+**CSS Implementation:**
+
+```scss
+// Fast interaction (200ms, ease-out)
+.mat-button {
+  transition: background-color 200ms cubic-bezier(0.05, 0.7, 0.1, 1);
+}
+
+// Menu open/close (300ms, ease-out for open, ease-in for close)
+.mat-menu {
+  &.mat-menu-opening {
+    animation: menuOpenIn 300ms cubic-bezier(0.05, 0.7, 0.1, 1) both;
+  }
+  
+  &.mat-menu-closing {
+    animation: menuCloseOut 200ms cubic-bezier(0.4, 0, 0.95, 0.2) both;
+  }
+}
+
+// State transitions (100-150ms, standard easing)
+.mat-form-field.mat-focused {
+  transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+```
+
+### Per-Component Animation Guidelines
+
+| Component | Open Duration | Close Duration | Easing |
+|-----------|---|---|---|
+| **Menu/Dropdown** | 300ms | 200ms | ease-out → ease-in |
+| **Dialog/Modal** | 300ms | 200ms | ease-out → ease-in |
+| **Drawer** | 300ms | 200ms | ease-out → ease-in |
+| **Snackbar appear** | 300ms | — | ease-out |
+| **Snackbar dismiss** | — | 200ms | ease-in |
+| **Tooltip appear** | 200ms | — | ease-out |
+| **Tooltip disappear** | — | 100ms | ease-in |
+| **Button ripple** | 200ms | — | standard |
+| **Checkbox animate** | 150ms | — | standard |
+
+### No Animation Rules
+
+**NEVER animate:**
+- Page/route transitions (let Angular handle routing)
+- Opacity of disabled elements (keep disabled state static)
+- z-index changes (appears/disappears, no transition)
+- Layout shifts (use `transform` instead of `width` changes)
+
+**Use `transform` for animated movement:**
+
+```scss
+// ❌ Bad — triggers layout recalculation
+.drawer {
+  width: 256px;
+  transition: width 300ms;
+  
+  &.closed {
+    width: 0;
+  }
+}
+
+// ✅ Good — smooth GPU-accelerated animation
+.drawer {
+  width: 256px;
+  transition: transform 300ms;
+  
+  &.closed {
+    transform: translateX(-256px);
+  }
+}
+```
+
 ## Do's and Don'ts
 
 ### Theming
