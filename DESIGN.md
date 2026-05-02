@@ -994,6 +994,47 @@ Material Design 3 uses consistent timing to create a polished, responsive interf
 }
 ```
 
+## Z-Index Stacking Ladder
+
+Material Design 3 uses a predictable z-index scale for all floating and overlaid components. **Never use arbitrary z-index values**—always pick from the scale below.
+
+| Layer | Z-Index | Components | Purpose |
+|-------|---------|-----------|---------|
+| **Content** | auto | Cards, lists, form fields | Normal document flow |
+| **Raised** | 1 | Elevated cards, raised buttons | Slightly above content |
+| **Overlay** | 100 | Semi-transparent overlays, scrim | Content blocker |
+| **Modal** | 1001 | Dialogs, modals | Above scrim, user interaction required |
+| **Drawer** | 1020 | Navigation drawer, side panel | Can overlay modal in drawer-over-modal scenarios |
+| **Menu** | 1050 | Dropdown menus, select panels, autocomplete | Above modals, floating content |
+| **Tooltip** | 1070 | Tooltips, popovers | Highest interactive layer |
+| **Sticky** | 1100 | Sticky headers, sticky navigation bars | Persistent sticky elements above all floating |
+
+**Important Notes:**
+
+- **Angular Material manages z-index automatically.** Don't override `z-index` on Material components.
+- **For custom components**, pick a z-index from the ladder above and stick to it.
+- **Scrim/backdrop** (dialog underlay) is typically z-index 1000; dialog is 1001.
+- **Sticky elements** (sticky headers) should be higher than floating components to stay visible during scroll.
+
+**Examples:**
+
+```scss
+// ❌ Bad — arbitrary z-index
+.my-modal {
+  z-index: 999;  // Not on the ladder; conflicts with menus at 1050
+}
+
+// ✅ Good — from the ladder
+.my-modal {
+  z-index: 1001;  // Matches Material modal layer
+}
+
+// ✅ Good — custom component above everything
+.my-critical-overlay {
+  z-index: 1100;  // Sticky layer for max visibility
+}
+```
+
 ## Do's and Don'ts
 
 ### Theming
