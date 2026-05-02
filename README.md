@@ -14,6 +14,7 @@ This repository provides a complete `DESIGN.md` file that serves as the single s
   - Mapped to Angular Material v19+ CSS variables (`--mat-sys-*`)
   - 9 sections: Overview, Colors, Typography, Layout, Elevation, Shapes, Components, Do's/Don'ts
   - **Machine-readable format** for AI agents, design tools, and code generators
+  - **New in v1.1**: Added Animation specs, Z-Index ladder, Composition rules, RTL support, and Agent Prompt Guide
 
 - **`DESIGN.md-GUIDE.md`** — How to write DESIGN.md files
   - Complete practitioner's guide
