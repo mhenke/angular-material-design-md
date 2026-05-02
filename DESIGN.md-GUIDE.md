@@ -556,3 +556,21 @@ The iteration tips section exists specifically for rules agents override by defa
 | Section 1 emotional register | Technically correct but brand-wrong aesthetic |
 
 ---
+
+## Quick-Start Checklist
+
+Before shipping a DESIGN.md, verify all nine sections are complete:
+
+- [ ] **Section 1 — Visual Theme & Atmosphere**: 2–3 paragraphs naming the emotional register; Key Characteristics bullet list; defining element identified
+- [ ] **Section 2 — Color Palette & Roles**: All colors have roles, not just hex values; shadow colors included; dark surface present
+- [ ] **Section 3 — Typography Rules**: Font family with fallback stack; OpenType features documented; full hierarchy table with letter-spacing; typography principles
+- [ ] **Section 4 — Component Stylings**: All button variants; all interactive states (hover, focus, disabled); cards, inputs, nav, badges
+- [ ] **Section 5 — Layout Principles**: Base spacing unit and scale; max container width; grid structure; whitespace philosophy in prose; border radius scale
+- [ ] **Section 6 — Depth & Elevation**: Named elevation levels; exact shadow CSS per level; shadow philosophy paragraph
+- [ ] **Section 7 — Do's and Don'ts**: Minimum 6 per side; each rule specific and tied to actual system decisions; counterintuitive rules prioritized
+- [ ] **Section 8 — Responsive Behavior**: Breakpoint table; touch target minimums; collapsing strategy for nav, type scale, grids, spacing
+- [ ] **Section 9 — Agent Prompt Guide**: Quick color reference table; 4–5 ready-to-paste component prompts; iteration tips for counterintuitive rules
+
+---
+
+*Guide distilled from [github.com/VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) — 70+ DESIGN.md files across Stripe, Linear, Vercel, Notion, Tesla, and more.*
