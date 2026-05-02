@@ -1125,6 +1125,167 @@ Material Design 3 components are designed to work together. This section clarifi
 </table>
 ```
 
+## RTL (Right-to-Left) Support
+
+Material Design 3 and Angular Material support RTL languages (Arabic, Hebrew, Persian, Urdu). RTL is handled automatically by Angular Material with minimal configuration.
+
+### HTML Setup
+
+Add `dir="rtl"` to the `<html>` element:
+
+```html
+<html dir="rtl" lang="ar">
+  <head>
+    <meta charset="utf-8">
+    <title>My App</title>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+</html>
+```
+
+Or detect dynamically:
+
+```typescript
+// app.component.ts
+import { Directionality } from '@angular/cdk/bidi';
+
+constructor(private dir: Directionality) {}
+
+ngOnInit() {
+  const textDirection = this.dir.value;  // 'ltr' or 'rtl'
+}
+```
+
+### Automatic Mirroring
+
+Angular Material **automatically mirrors** these properties in RTL:
+- Padding/margin (left ↔ right)
+- Border-radius (top-left ↔ top-right, etc.)
+- Text alignment
+- Flex layout direction (`flex-start` ↔ `flex-end`)
+- Icon positioning
+
+**You don't need to write separate RTL CSS.** Material handles it.
+
+### CSS Logical Properties (Best Practice)
+
+Instead of directional properties (`left`, `right`, `margin-left`), use **logical properties** that automatically adjust for RTL:
+
+```scss
+// ❌ Bad — hardcoded directions
+.sidebar {
+  margin-left: 16px;
+  padding-right: 24px;
+  border-left: 1px solid var(--mat-sys-outline);
+}
+
+// ✅ Good — logical properties (RTL-safe)
+.sidebar {
+  margin-inline-start: 16px;    // Left in LTR, right in RTL
+  padding-inline-end: 24px;     // Right in LTR, left in RTL
+  border-inline-start: 1px solid var(--mat-sys-outline);
+}
+```
+
+**Logical Property Mappings:**
+
+| Logical Property | LTR Equivalent | RTL Equivalent |
+|---|---|---|
+| `margin-inline-start` | `margin-left` | `margin-right` |
+| `margin-inline-end` | `margin-right` | `margin-left` |
+| `padding-inline-start` | `padding-left` | `padding-right` |
+| `padding-inline-end` | `padding-right` | `padding-left` |
+| `border-inline-start` | `border-left` | `border-right` |
+| `border-inline-end` | `border-right` | `border-left` |
+| `text-align: start` | text-align: left | text-align: right |
+| `text-align: end` | text-align: right | text-align: left` |
+
+### Component Examples
+
+**Card (RTL-safe):**
+
+```html
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Title</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <!-- Content automatically RTL -->
+  </mat-card-content>
+  <mat-card-actions>
+    <!-- Buttons automatically reorder in RTL -->
+  </mat-card-actions>
+</mat-card>
+```
+
+**Navigation Drawer (RTL-safe):**
+
+```html
+<mat-drawer-container>
+  <mat-drawer mode="side" opened="true">
+    <!-- In RTL: drawer appears on right instead of left -->
+    <nav mat-nav-list>
+      <mat-list-item>Home</mat-list-item>
+      <mat-list-item>About</mat-list-item>
+    </nav>
+  </mat-drawer>
+  
+  <mat-drawer-content>
+    <!-- Main content; automatically shifts -->
+  </mat-drawer-content>
+</mat-drawer-container>
+```
+
+### When to Use `dir="rtl"` on Elements
+
+Only use `dir="rtl"` on specific elements if content within is RTL (e.g., embedded Arabic text in an English document):
+
+```html
+<!-- Main app: English LTR -->
+<html dir="ltr">
+  <h1>Welcome</h1>
+  
+  <!-- Quote in Arabic: override to RTL -->
+  <blockquote dir="rtl" lang="ar">
+    السلام عليكم ورحمة الله
+  </blockquote>
+</html>
+```
+
+### Testing RTL
+
+```typescript
+// Test directive detects text direction
+import { BidiModule } from '@angular/cdk/bidi';
+
+// In your module:
+imports: [BidiModule]
+
+// In your component:
+constructor(private dir: Directionality) {}
+
+isRTL() {
+  return this.dir.value === 'rtl';
+}
+```
+
+### RTL Considerations
+
+- **Text alignment**: Auto-handled by Material
+- **Icons**: May need flipping (e.g., back arrow should flip in RTL). Use `dir="ltr"` on icon if it shouldn't flip
+- **Numbers and dates**: Keep in LTR format even in RTL language (numbers don't flip)
+- **Mixed content**: Use `<bdi>` (bidirectional isolate) for mixed LTR/RTL text
+
+```html
+<!-- Numbers stay LTR in RTL context -->
+<p dir="rtl">السعر: <bdi>$99.99</bdi></p>
+
+<!-- Icon that shouldn't flip -->
+<mat-icon dir="ltr">arrow_forward</mat-icon>
+```
+
 ## Do's and Don'ts
 
 ### Theming
