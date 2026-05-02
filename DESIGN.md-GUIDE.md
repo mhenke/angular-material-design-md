@@ -234,3 +234,79 @@ typography:
 - If a component variant is used only in specific contexts, note when to use it
 
 ---
+
+### 5. Layout Principles
+
+**Purpose:** Define the spatial system — the spacing unit, grid, container widths, and whitespace philosophy.
+
+**What to include:**
+- Base spacing unit (commonly 4px or 8px) and the scale built from it
+- Max container/content width
+- Grid structure (columns, gutters, breakpoint behavior)
+- Whitespace philosophy in prose — the *feel* of the spacing, not just the numbers
+- Border radius scale as named levels (xs/sm/md/lg or Micro/Standard/Large)
+
+**Annotated example:**
+
+~~~markdown
+## 5. Layout Principles
+
+### Spacing System
+- Base unit: `8px`
+- Scale: `4px, 8px, 12px, 16px, 24px, 32px, 48px, 64px`
+
+### Grid & Container
+- Max content width: `1080px`, centered
+- Hero: single-column, generous horizontal padding
+- Feature sections: 3-column grid → 2-column → 1-column on mobile
+- Full-width dark brand sections maintain padding rhythm
+
+### Whitespace Philosophy
+Stripe uses precision spacing, not generous emptiness. Every gap is a deliberate typographic choice — financial data displays are dense, but the chrome around them is generously spaced.
+
+### Border Radius Scale
+| Name | Value | Use |
+|------|-------|-----|
+| Standard | 4px | Buttons, inputs, badges |
+| Comfortable | 6px | Navigation, larger interactive elements |
+| Large | 8px | Featured cards, hero elements |
+~~~
+
+**Writing guidance:**
+- The whitespace philosophy prose is what separates distinctive systems from generic ones — don't skip it
+- Name each border-radius level; "shadow-sm / shadow-md" is more useful to agents than anonymous pixel values
+- Grid structure should describe behavior across breakpoints, not just column count
+
+---
+
+### 6. Depth & Elevation
+
+**Purpose:** Document the shadow system as a named hierarchy — not as scattered CSS snippets but as a deliberate elevation language.
+
+**What to include:**
+- Named levels from flat to highest elevation (typically 4–5 levels)
+- Exact shadow CSS value at each level
+- A shadow philosophy paragraph explaining why the shadow color was chosen
+
+**Annotated example:**
+
+~~~markdown
+## 6. Depth & Elevation
+
+| Level | Shadow | Use |
+|-------|--------|-----|
+| Flat | none | Page background, inline text |
+| Ambient | `rgba(23,23,23,0.06) 0px 3px 6px` | Subtle card lift |
+| Standard | `rgba(23,23,23,0.08) 0px 15px 35px` | Standard cards |
+| Elevated | `rgba(50,50,93,0.25) 0px 30px 45px -30px, rgba(0,0,0,0.1) 0px 18px 36px -18px` | Featured cards, dropdowns |
+| Deep | `rgba(3,3,39,0.25) 0px 14px 21px -14px, rgba(0,0,0,0.1) 0px 8px 17px -8px` | Modals |
+
+**Shadow Philosophy:** Stripe's primary shadow color (`rgba(50,50,93,0.25)`) is a deep blue-gray echoing the navy-purple brand palette. Shadows don't just add depth — they add brand atmosphere. The multi-layer approach pairs the brand-tinted shadow (far, soft) with a neutral black layer (near, tight) to create parallax-like depth.
+~~~
+
+**Writing guidance:**
+- Always name your shadow levels — agents query by semantic name, not by CSS value
+- The shadow philosophy paragraph is not optional: agents that don't understand why the shadow color was chosen will replace it with neutral gray
+- Multi-layer shadows should be shown verbatim; agents cannot infer the formula from a description
+
+---
