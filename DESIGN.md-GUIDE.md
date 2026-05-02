@@ -113,3 +113,64 @@ In the YAML variant, use semantic key names (`ink`, `canvas`, `hairline`, `on-pr
 - Include the CSS variable name when you know it — agents can use it to reference the live site's token
 
 ---
+
+### 3. Typography Rules
+
+**Purpose:** Give agents the complete typographic system — fonts, fallbacks, the full hierarchy, and the principles behind size/weight/spacing choices.
+
+**What to include:**
+- Font family declaration with full fallback stack
+- OpenType features enabled globally (e.g., `"ss01"` for stylistic sets, `"liga"` for ligatures, `"tnum"` for tabular numerals)
+- Hierarchy table with columns: Role | Font | Size | Weight | Line Height | Letter Spacing | Notes
+- 3–5 typography principles explaining the *why* behind distinctive choices
+
+**Annotated example:**
+
+~~~markdown
+## 3. Typography Rules
+
+### Font Family
+- **Primary**: `sohne-var`, fallback: `SF Pro Display, -apple-system, sans-serif`
+- **Monospace**: `SourceCodePro`, fallback: `SFMono-Regular, Menlo, monospace`
+- **OpenType Features**: `"ss01"` on all sohne-var text; `"tnum"` for financial data.
+
+### Hierarchy
+
+| Role | Font | Size | Weight | Line Height | Letter Spacing | Notes |
+|------|------|------|--------|-------------|----------------|-------|
+| Display Hero | sohne-var | 56px | 300 | 1.03 | -1.4px | ss01 |
+| Section Heading | sohne-var | 32px | 300 | 1.10 | -0.64px | ss01 |
+| Body | sohne-var | 16px | 300–400 | 1.40 | normal | ss01 |
+| Code Body | SourceCodePro | 12px | 500 | 2.00 | normal | — |
+
+### Principles
+- Weight 300 at display sizes is the brand's signature — lightness as luxury
+- `"ss01"` is non-negotiable; it modifies glyphs to create the geometric, contemporary feel
+- Progressive tracking: letter-spacing tightens proportionally with size
+~~~
+
+**YAML-frontmatter variant:**
+
+~~~yaml
+typography:
+  display-xl:
+    fontFamily: sohne-var
+    fontSize: 56px
+    fontWeight: 300
+    lineHeight: 1.03
+    letterSpacing: -1.4px
+  body:
+    fontFamily: sohne-var
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 1.40
+    letterSpacing: normal
+~~~
+
+**Writing guidance:**
+- Fallback stacks are not optional — agents render with system fonts when custom fonts are unavailable; without fallbacks the output looks broken
+- Letter-spacing must be exact pixel values, not relative words like "tight" — agents cannot translate "tight" to a number
+- The principles section is where you explain the *why*; without it, agents will override correct but counterintuitive choices (e.g., weight 300 at 56px)
+- OpenType features are often skipped and almost always important — `"ss01"` can change the entire character of a font
+
+---
